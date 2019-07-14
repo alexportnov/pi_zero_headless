@@ -44,6 +44,11 @@ TODO ...
 ```
 
 You have *.img file ready to be flushed on the SDCARD using the software of your choice.
+Example for sdcard reader detected as /dev/sdd
+```sh
+sudo umount /dev/sdd*
+sudo dd bs=4M status=progress if=./raspbian_headless.img of=/dev/sdd
+```
 
 
 * Tested on Ubuntu18.04LTS but it probably works similar on other systems capable of building Linux kernel.
