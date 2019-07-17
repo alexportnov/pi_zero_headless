@@ -9,7 +9,7 @@ Consider a drone, RC car, web-server, webcam controller based on Raspberry board
 
 ## Why?
 1) The out of the box images pretty much forces you to connect a HDMI display and USB hub with keyboard even if you want to simply SSH to the board and run a terminal application.
-Sure, you can edit the images, connect it to the network, install Bonjour or connect UART pins to serial to USB converter ...
+Sure, you can edit the images, connect it to the network (on Zero W), install Bonjour or connect UART pins to serial to USB converter ...
 This image allows you to simply connect a USB to computer (with microUSB cable) and get a serial interface - that's it.
 You are ready to go.
 
@@ -31,31 +31,43 @@ We basically create scripts and patch sets over the Raspbian Lite and its Kernel
 
 
 There are 4 scripts:
-  1) Init - install all packages needed for the process, fetch the toolchain, sources and images.
-  2) Build - compile everything needed 
-  3) Images - re/package everyting back in IMG file 
+  1) Init - install all packages needed for the process, fetch the toolchain, sources and images. Probably needs to run once.
+  2) Build - compile everything needed
+  3) Images - re/package everyting back in IMG file
   4) Clean - remove temp files or folders
 
 
-* Some commands requier root (sudo) - this is due to mounting the original image files and making the modifications.
+* Some commands requier root (sudo) - this is due to mounting the original image files and making the modifications or installing the apt-get packages.
 
 ```sh
-TODO ...
+sudo ./init.sh
+./build.sh
+sudo ./images.sh
 ```
 
-You have *.img file ready to be flushed on the SDCARD using the software of your choice.
-Example for sdcard reader detected as /dev/sdd
+You have ./out/raspbian_lite_headless.img file ready to be flushed on the SDCARD using the software of your choice.
+Example for sdcard reader detected as /dev/sdb
 ```sh
-sudo umount /dev/sdd*
-sudo dd bs=4M status=progress if=./raspbian_headless.img of=/dev/sdd
+sudo umount /dev/sdb*
+sudo dd bs=4M status=progress if=./out/raspbian_headless.img of=/dev/sdb
+sudo umount /dev/sdb*
 ```
 
+Connect usign microUSB cable - the board will boot and you an connect to using COMX port on windows or /dev/ttyUSBX on Linux right into login prom.
+Login detais as in standard image pi:raspberry
+First boot may take a while - you get the prom only after init is fully done.
 
 * Tested on Ubuntu18.04LTS but it probably works similar on other systems capable of building Linux kernel.
-I wouldn't try it on Cygwin tho ...
+I wouldn't try it on Cygwin tho ... You can always setup a VM.
 * Why using scripts and patches?
   1) This way it the easiest to keep up-to-date with latest Raspbian releases.
   2) We don't need to distribute binaries.
   3) You can choose the patches you actually want to use.
+
+
+## TODO
+current commit will get you image file with headless setup.
+Next step is starting the power/size optimizations for headless case.
+
 
 Have fun!
