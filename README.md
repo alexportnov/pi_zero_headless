@@ -1,5 +1,5 @@
 # RaspberryPI Zero - Headless images
-The purpose is to create a headless (a.k.a without display or direct user input) set of images to be flushed on the board for RaspberryPI Zero/ZeroW. Based on latest [Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/) and [Kernel](https://github.com/raspberrypi/linux).
+The purpose is to create a headless (a.k.a without display or direct user input) set of images to be flushed on RaspberryPI Zero/ZeroW. Image is always based on latest [Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/) and [Kernel](https://github.com/raspberrypi/linux).
 
 NOTE: This project supports RaspberryPI Zero/ZeroW only. While other variants can be supported with minimal modifications see the "Why RaspberryPI Zero?" section below.
 
@@ -8,10 +8,9 @@ There are multiple use-cases where the display or direct user input is simply no
 Consider a drone, RC car, web-server, webcam controller based on Raspberry board. Once you have your code set and running you will never need any non console/network/sensor/button based interaction with the board.
 
 ## Why?
-1) The out of the box images pretty much forces you to connect a HDMI display and USB hub with keyboard even if you want to simply SSH to the board and run a terminal application.
+1) The out of the box images pretty much forces you to connect a HDMI display and USB hub with keyboard even if you want to simply SSH/UART to the board and run a terminal application.
 Sure, you can edit the images, connect it to the network (on Zero W), install Bonjour or connect UART pins to serial to USB converter ...
-This image allows you to simply connect a USB to computer (with microUSB cable) and get a serial interface - that's it.
-You are ready to go.
+This image allows you to simply connect a USB to computer (with microUSB cable) and get a serial interface - that's it; you are ready to go.
 
 2) Having display/input interfaces (even if they are not connected) consumes power, makes the images larger, boot time slower. No point of having those if you are not using them.
 
@@ -33,8 +32,8 @@ We basically create scripts and patch sets over the Raspbian Lite and its Kernel
 There are 4 scripts:
   1) Init - install all packages needed for the process, fetch the toolchain, sources and images. Probably needs to run once.
   2) Build - compile everything needed
-  3) Images - re/package everyting back in IMG file
-  4) Clean - remove temp files or folders
+  3) Images - re/package everyting back into IMG file
+  4) Clean - remove temp files and folders
 
 
 * Some commands requier root (sudo) - this is due to mounting the original image files and making the modifications or installing the apt-get packages.
@@ -53,7 +52,7 @@ sudo dd bs=4M status=progress if=./out/raspbian_headless.img of=/dev/sdb
 sudo umount /dev/sdb*
 ```
 
-Connect usign microUSB cable - the board will boot and you an connect to using COMX port on windows or /dev/ttyUSBX on Linux right into login prom.
+Connect usign microUSB cable - the board will boot and you an connect to using COMX port on windows or /dev/ttyUSBX on Linux - right into login prom.
 Login detais as in standard image pi:raspberry
 First boot may take a while - you get the prom only after init is fully done.
 
@@ -66,7 +65,7 @@ I wouldn't try it on Cygwin tho ... You can always setup a VM.
 
 
 ## TODO
-current commit will get you image file with headless setup.
+Current commit will get you image file with headless setup.
 Next step is starting the power/size optimizations for headless case.
 
 
