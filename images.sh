@@ -1,9 +1,6 @@
 #!/bin/bash
 source common.sh
 
-EXT4=$RUNDIR/out/mnt/ext4
-FAT32=$RUNDIR/out/mnt/fat32
-
 mkdir -p $EXT4
 mkdir -p $FAT32
 
@@ -17,8 +14,10 @@ if [ "$(ls -A $RUNDIR/overlay/ext4)" ]; then
     sudo cp -r $RUNDIR/overlay/ext4/* $EXT4/
 fi
 
-# create tty bridge to ttyGS0 - serial over USB
-sudo ln -sf /lib/systemd/system/getty@.service $EXT4/etc/systemd/system/getty.target.wants/getty@ttyGS0.service
+# patch the fs
+if [ "$(ls -A $RUNDIR/patch_scripts/ext4)" ]; then
+    find $RUNDIR/patch_scripts/ext4 -type f \( -name "*.sh" \) | sort | while read f; do echo $f; sudo bash $f $EXT4; done;
+fi
 
 # install compiled kernel modules
 sudo rm -rf $EXT4/lib/modules/*
@@ -38,14 +37,11 @@ if [ "$(ls -A $OVERLAY_DIR/fat32)" ]; then
     sudo cp -r $OVERLAY_DIR/fat32/* $FAT32/
 fi
 
-# cleanup, then copy kernel images and device tree
-sudo rm -rf $FAT32/kernel*.img
-sudo rm -rf $FAT32/*.dtb
-sudo rm -rf $FAT32/overlays/*
-sudo rm -rf $FAT32/start4*.elf      # pi4 FW files
-sudo rm -rf $FAT32/fixup4*.dat      # pi4 linker files
-sudo rm -rf $FAT32/start_db.elf     # debug FW
-sudo rm -rf $FAT32/issue.txt
+# patch the fs
+if [ "$(ls -A $RUNDIR/patch_scripts/fat32)" ]; then
+    find $RUNDIR/patch_scripts/fat32 -type f \( -name "*.sh" \) | sort | while read f; do echo $f; sudo bash $f $FAT32; done;
+fi
+
 
 sudo cp $KERNEL_OUT/arch/arm/boot/zImage $FAT32/kernel.img
 sudo cp $KERNEL_OUT/arch/arm/boot/dts/bcm2708-rpi-zero*.dtb $FAT32/
