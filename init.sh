@@ -43,7 +43,9 @@ fi
 
 unzip $LATEST_FILE -d $RUNDIR/out/
 LAST_FILE=`ls -t $RUNDIR/out/*.img | head -1`
-rm $IMG_FILE
+if [ -f $IMG_FILE ]; then
+    rm $IMG_FILE
+fi    
 mv $LAST_FILE $IMG_FILE
 
 echo "-------------- Done --------------"

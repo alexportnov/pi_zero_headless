@@ -45,11 +45,11 @@ sudo rm -rf $FAT32/overlays/*
 sudo rm -rf $FAT32/start4*.elf      # pi4 FW files
 sudo rm -rf $FAT32/fixup4*.dat      # pi4 linker files
 sudo rm -rf $FAT32/start_db.elf     # debug FW
+sudo rm -rf $FAT32/issue.txt
 
 sudo cp $KERNEL_OUT/arch/arm/boot/zImage $FAT32/kernel.img
-# TODO
-#sudo cp $KERNEL_OUT/arch/arm/boot/dts/*rpi-zero*.dtb $FAT32/
-sudo cp $KERNEL_OUT/arch/arm/boot/dts/*.dtb $FAT32/
+sudo cp $KERNEL_OUT/arch/arm/boot/dts/bcm2708-rpi-zero*.dtb $FAT32/
 sudo cp $KERNEL_OUT/arch/arm/boot/dts/overlays/*.dtb* $FAT32/overlays/
+
 
 sudo umount $FAT32

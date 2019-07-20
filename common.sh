@@ -2,7 +2,7 @@
 
 RUNDIR=`pwd`
 
-KERNEL_SOURCE=$RUNDIR/kernel_source
+KERNEL_SOURCE=$RUNDIR/kernel
 KERNEL_OUT=$RUNDIR/out/kernel_out
 
 TOOLCHAIN_DIR=$RUNDIR/toolchain
