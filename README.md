@@ -63,6 +63,12 @@ I wouldn't try it on Cygwin tho ... You can always setup a VM.
   2) We don't need to distribute binaries.
   3) You can choose the patches you actually want to use.
 
+## Power
+Stock BusterLite (2019-07-10) consumes 144mW on idle (not bad ...)
+
+## Boot Time
+Stock BusterLite (2019-07-10) boot time (not first) is TODO
+
 
 ## TODO
 Current commit will get you image file with headless setup.
